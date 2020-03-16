@@ -11,14 +11,14 @@
     </properties>
 
 
-    <groupId>io.github.karols</groupId>
+    <groupId>io.github.samuelkinnett</groupId>
     <artifactId>hocr4j</artifactId>
     <version>0.1.2</version>
 
     <name>hOCR4J</name>
-    <url>http://www.github.com/KarolS/hOCR4J</url>
+    <url>https://github.com/SamuelKinnett/hOCR4J</url>
     <description>Java library for parsing HOCR files.</description>
-    <inceptionYear>2014</inceptionYear>
+    <inceptionYear>2020</inceptionYear>
 
     <licenses>
         <license>
@@ -29,12 +29,6 @@
     </licenses>
 
     <developers>
-        <developer>
-            <id>KarolS</id>
-            <name>Karol Stasiak</name>
-            <email>karol.m.stasiak+hocr-parser@gmail.com</email>
-            <url>http://karols.github.io</url>
-        </developer>
         <developer>
             <id>SamuelKinnett</id>
             <name>Samuel Kinnett</name>
@@ -65,12 +59,6 @@
             <artifactId>junit-quickcheck-generators</artifactId>
             <version>0.3</version>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>15.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
