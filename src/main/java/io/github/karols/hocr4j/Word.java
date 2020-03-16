@@ -9,8 +9,7 @@
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 * Lesser General Public License for more details.
-*/
-
+ */
 package io.github.karols.hocr4j;
 
 import io.github.karols.hocr4j.dom.HocrElement;
@@ -34,14 +33,12 @@ import javax.annotation.concurrent.Immutable;
 public class Word implements Bounded, Comparable<Word> {
 
     /**
-     * If <code>string</code> is made from concatenating
-     * several consecutive words from the <code>wordList</code>,
-     * returns union of bounds of those words.
-     * If not, returns <code>null</code>.
-     * Spaces are ignored. Uses normal, strict string equality.
+     * If <code>string</code> is made from concatenating several consecutive words from the <code>wordList</code>,
+     * returns union of bounds of those words. If not, returns <code>null</code>. Spaces are ignored. Uses normal,
+     * strict string equality.
      *
      * @param wordList list of words
-     * @param string   string to search for
+     * @param string string to search for
      * @return bounds of the matching words
      * @see Line#findBoundsOfWord(String)
      */
@@ -100,11 +97,12 @@ public class Word implements Bounded, Comparable<Word> {
     private final boolean isBold;
     private final boolean isItalic;
     private final String text;
+    private final Float confidence;
 
     /**
      * Creates a word using standard font.
      *
-     * @param text   text of the word
+     * @param text text of the word
      * @param bounds bounds of the word
      */
     public Word(@Nonnull String text, Bounds bounds) {
@@ -112,14 +110,15 @@ public class Word implements Bounded, Comparable<Word> {
         this.bounds = bounds;
         this.isBold = false;
         this.isItalic = false;
+        this.confidence = null;
     }
 
     /**
      * Creates a word using given font font.
      *
-     * @param text     text of the word
-     * @param bounds   bounds of the word
-     * @param isBold   if the font is bold
+     * @param text text of the word
+     * @param bounds bounds of the word
+     * @param isBold if the font is bold
      * @param isItalic if the font is italic
      */
     public Word(@Nonnull String text, Bounds bounds, boolean isBold, boolean isItalic) {
@@ -127,6 +126,7 @@ public class Word implements Bounded, Comparable<Word> {
         this.bounds = bounds;
         this.isBold = isBold;
         this.isItalic = isItalic;
+        this.confidence = null;
     }
 
     /**
@@ -143,12 +143,14 @@ public class Word implements Bounded, Comparable<Word> {
         Bounds _bounds = null;
         boolean _isBold = false;
         boolean _isItalic = false;
+        Float _confidence = null;
         text = e.getRawText();
         while (true) {
             if (e instanceof HocrTag) {
                 HocrTag tag = (HocrTag) e;
                 if (tag.name.equals("span") && ("ocrx_word".equals(tag.clazz) || "ocr_word".equals(tag.clazz))) {
                     _bounds = Bounds.fromHocrTitleValue(tag.title);
+                    _confidence = getConfidenceFromTitle(tag.title);
                 } else if (tag.name.equals("strong") || tag.name.equals("b")) {
                     _isBold = true;
                 } else if (tag.name.equals("em") || tag.name.equals("i")) {
@@ -168,6 +170,7 @@ public class Word implements Bounded, Comparable<Word> {
         isItalic = _isItalic;
         isBold = _isBold;
         bounds = _bounds;
+        confidence = _confidence;
     }
 
     @Override
@@ -182,14 +185,24 @@ public class Word implements Bounded, Comparable<Word> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Word word = (Word) o;
 
-        if (isBold != word.isBold) return false;
-        if (isItalic != word.isItalic) return false;
-        if (text != null ? !text.equals(word.text) : word.text != null) return false;
+        if (isBold != word.isBold) {
+            return false;
+        }
+        if (isItalic != word.isItalic) {
+            return false;
+        }
+        if (text != null ? !text.equals(word.text) : word.text != null) {
+            return false;
+        }
 
         return true;
     }
@@ -255,11 +268,10 @@ public class Word implements Bounded, Comparable<Word> {
     }
 
     /**
-     * Checks if this word may be an OCR artifact rather than actual word.
-     * Current implementation just checks if the word has one character or more.
+     * Checks if this word may be an OCR artifact rather than actual word. Current implementation just checks if the
+     * word has one character or more.
      *
-     * @return <code>true</code> if this word may be an OCR artifact,
-     * <code>false</code> otherwise
+     * @return <code>true</code> if this word may be an OCR artifact, <code>false</code> otherwise
      */
     public boolean mayBeOcrArtifact() {
         return text.length() <= 1; // TODO: think up something smarter
@@ -288,5 +300,24 @@ public class Word implements Bounded, Comparable<Word> {
      */
     public Word translate(int dx, int dy) {
         return new Word(text, bounds.translate(dx, dy));
+    }
+
+    private Float getConfidenceFromTitle(@Nonnull String titleValue) {
+        int defStart = titleValue.indexOf("x_wconf ");
+        if (defStart < 0) {
+            return null;
+        }
+
+        titleValue = titleValue.substring(defStart);
+        int descEnd = titleValue.indexOf(';');
+        if (descEnd >= 0) {
+            titleValue = titleValue.substring(0, descEnd);
+        }
+        try {
+            Integer intConfidence = Integer.parseInt(titleValue.split(" ")[1]);
+            return intConfidence / 100.0f;
+        } catch (NumberFormatException nex) {
+            return null;
+        }
     }
 }
