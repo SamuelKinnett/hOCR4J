@@ -6,6 +6,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
 
@@ -33,12 +35,16 @@
             <email>karol.m.stasiak+hocr-parser@gmail.com</email>
             <url>http://karols.github.io</url>
         </developer>
+        <developer>
+            <id>SamuelKinnett</id>
+            <name>Samuel Kinnett</name>
+        </developer>
     </developers>
 
     <scm>
-        <connection>scm:git:git@github.com:KarolS/hOCR4J.git</connection>
-        <developerConnection>scm:git:git@github.com:KarolS/hOCR4J.git</developerConnection>
-        <url>git@github.com:KarolS/hOCR4J.git</url>
+        <connection>scm:git:git@github.com:SamuelKinnett/hOCR4J.git</connection>
+        <developerConnection>scm:git:git@github.com:SamuelKinnett/hOCR4J.git</developerConnection>
+        <url>https://github.com/SamuelKinnett/hOCR4J</url>
     </scm>
     
     <dependencies>
@@ -78,10 +84,10 @@
             <optional>true</optional><!-- needed only for compile-time annotations -->
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>com.google.code.findbugs</groupId>-->
-            <!--<artifactId>annotations</artifactId>-->
-            <!--<version>2.0.2</version>-->
-            <!--<optional>true</optional>&lt;!&ndash; needed only for compile-time annotations &ndash;&gt;-->
+        <!--<groupId>com.google.code.findbugs</groupId>-->
+        <!--<artifactId>annotations</artifactId>-->
+        <!--<version>2.0.2</version>-->
+        <!--<optional>true</optional>&lt;!&ndash; needed only for compile-time annotations &ndash;&gt;-->
         <!--</dependency>-->
     </dependencies>
     <build>
@@ -91,19 +97,19 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>
         <!--<plugins>-->
-            <!--<plugin>-->
-                <!--<groupId>org.apache.maven.plugins</groupId>-->
-                <!--<artifactId>maven-javadoc-plugin</artifactId>-->
-                <!--<configuration>-->
-                    <!--<encoding>UTF-8</encoding>-->
-                <!--</configuration>-->
-            <!--</plugin>-->
+        <!--<plugin>-->
+        <!--<groupId>org.apache.maven.plugins</groupId>-->
+        <!--<artifactId>maven-javadoc-plugin</artifactId>-->
+        <!--<configuration>-->
+        <!--<encoding>UTF-8</encoding>-->
+        <!--</configuration>-->
+        <!--</plugin>-->
         <!--</plugins>-->
 
     </build>
