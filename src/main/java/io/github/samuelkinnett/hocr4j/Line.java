@@ -18,8 +18,6 @@ import io.github.samuelkinnett.hocr4j.utils.CollectionUtils;
 import io.github.samuelkinnett.hocr4j.utils.DelegatingUnmodifiableList;
 import io.github.samuelkinnett.hocr4j.utils.TextUtils;
 
-import org.apache.commons.lang3.ObjectUtils;
-
 import java.util.*;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
@@ -161,7 +159,7 @@ public class Line extends DelegatingUnmodifiableList<Word> implements Bounded {
             return false;
         }
         final Line other = (Line) obj;
-        return ObjectUtils.equals(this.words, other.words) && ObjectUtils.equals(this.bounds, other.bounds);
+        return Objects.equals(this.words, other.words) && Objects.equals(this.bounds, other.bounds);
     }
 
     /**
@@ -404,7 +402,7 @@ public class Line extends DelegatingUnmodifiableList<Word> implements Bounded {
 
     @Override
     public int hashCode() {
-        return ObjectUtils.hashCodeMulti(words, bounds);
+        return Objects.hash(words, bounds);
     }
 
     /**

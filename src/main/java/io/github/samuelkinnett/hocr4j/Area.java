@@ -18,11 +18,10 @@ import io.github.samuelkinnett.hocr4j.dom.HocrTag;
 import io.github.samuelkinnett.hocr4j.utils.CollectionUtils;
 import io.github.samuelkinnett.hocr4j.utils.DelegatingUnmodifiableList;
 
-import org.apache.commons.lang3.ObjectUtils;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import javax.annotation.Nonnull;
@@ -148,7 +147,7 @@ public class Area extends DelegatingUnmodifiableList<Paragraph> implements Bound
             return false;
         }
         final Area other = (Area) obj;
-        return ObjectUtils.equals(this.paragraphs, other.paragraphs) && ObjectUtils.equals(this.bounds, other.bounds);
+        return Objects.equals(this.paragraphs, other.paragraphs) && Objects.equals(this.bounds, other.bounds);
     }
 
     /**
@@ -216,7 +215,7 @@ public class Area extends DelegatingUnmodifiableList<Paragraph> implements Bound
 
     @Override
     public int hashCode() {
-        return ObjectUtils.hashCodeMulti(paragraphs, bounds);
+        return Objects.hash(paragraphs, bounds);
     }
 
     /**

@@ -9,11 +9,9 @@
 * but WITHOUT ANY WARRANTY; without even the implied warranty of
 * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 * Lesser General Public License for more details.
-*/
-
+ */
 package io.github.samuelkinnett.hocr4j;
 
-import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Collection;
@@ -22,22 +20,27 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 
 import static java.lang.Math.*;
+import java.util.Comparator;
 
 /**
  * A rectangle, used to represent bounds surrounding elements of the page.
  * <br/>
- * The rectangles are specified using integer coordinates
- * and usually the unit used is pixels.
+ * The rectangles are specified using integer coordinates and usually the unit used is pixels.
  */
 @Immutable
 public class Bounds implements Comparable<Bounds>, Bounded {
 
+    private static final Comparator<Bounds> COMPARATOR
+            = Comparator.comparing(Bounds::getLeft)
+                    .thenComparing(Bounds::getTop)
+                    .thenComparing(Bounds::getRight)
+                    .thenComparing(Bounds::getBottom);
+
     /**
-     * Creates bounds from a value of the <code>title</code>
-     * attribute on an HOCR tag.
+     * Creates bounds from a value of the <code>title</code> attribute on an HOCR tag.
      * <br/>
-     * The <code>title</code> attribute contains a comma separated list
-     * of various properities, the bounds are expressed as follows:
+     * The <code>title</code> attribute contains a comma separated list of various properities, the bounds are expressed
+     * as follows:
      * <br/>
      * <code>bbox LEFT TOP RIGHT BOTTOM</code>
      * <br/>
@@ -114,7 +117,6 @@ public class Bounds implements Comparable<Bounds>, Bounded {
         return new Bounds(Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MAX_VALUE, y);
     }
 
-
     /**
      * Checks if the bounds have zero area.
      * <br/>
@@ -142,11 +144,11 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     /**
-     * A null-safe union of bounds. Treats <code>null</code> as empty bounds.
-     * Returns <code>null</code> if any argument is <code>null</code>.
+     * A null-safe union of bounds. Treats <code>null</code> as empty bounds. Returns <code>null</code> if any argument
+     * is <code>null</code>.
      * <br/>
-     * An intesection of several bounding rectangles
-     * is the largest bounding rectangle that is contained by all the input rectangles.
+     * An intesection of several bounding rectangles is the largest bounding rectangle that is contained by all the
+     * input rectangles.
      *
      * @param b1 first bounds
      * @param b2 second bounds
@@ -162,11 +164,10 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     /**
-     * A null-safe union of bounds. Treats <code>null</code> as empty bounds.
-     * Returns <code>null</code> if both arguments are <code>null</code>.
+     * A null-safe union of bounds. Treats <code>null</code> as empty bounds. Returns <code>null</code> if both
+     * arguments are <code>null</code>.
      * <br/>
-     * A union of several bounding rectangles
-     * is the smallest bounding rectangle that contains all the input rectangles.
+     * A union of several bounding rectangles is the smallest bounding rectangle that contains all the input rectangles.
      *
      * @param b1 first bounds
      * @param b2 second bounds
@@ -185,13 +186,11 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     /**
-     * The smallest rectangle containing all the elements of the collection.
-     * The collection and all its elements have to be non-null.
-     * If the collections is empty, returns <code>null</code>.
+     * The smallest rectangle containing all the elements of the collection. The collection and all its elements have to
+     * be non-null. If the collections is empty, returns <code>null</code>.
      *
      * @param thingies collection of bounded objects
-     * @return union of bounds of all objects,
-     *         or <code>null</code> if the collection was empty
+     * @return union of bounds of all objects, or <code>null</code> if the collection was empty
      * @see Bounds#ofAll(Bounded...)
      * @see Bounds#nullSafeUnion(Bounds, Bounds)
      * @see Bounds#union(Bounds)
@@ -208,13 +207,11 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     /**
-     * The smallest rectangle containing all the elements of the parameter list/array.
-     * All objects have to be non-null.
+     * The smallest rectangle containing all the elements of the parameter list/array. All objects have to be non-null.
      * If the collections is empty, returns <code>null</code>.
      *
      * @param thingies parameter list/array of bounded objects
-     * @return union of bounds of all objects,
-     *         or <code>null</code> if the parameter list/array was empty
+     * @return union of bounds of all objects, or <code>null</code> if the parameter list/array was empty
      * @see Bounds#ofAll(Collection)
      * @see Bounds#nullSafeUnion(Bounds, Bounds)
      * @see Bounds#union(Bounds)
@@ -229,15 +226,13 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     /**
-     * The smallest rectangle containing the first elements of all pairs of the collection.
-     * The collection, all the pairs and all the first elements have to be non-null.
-     * If the collections is empty, returns <code>null</code>.
+     * The smallest rectangle containing the first elements of all pairs of the collection. The collection, all the
+     * pairs and all the first elements have to be non-null. If the collections is empty, returns <code>null</code>.
      *
      * @param thingies collection of pairs
-     * @param <T>      type of the second element of the pair
-     * @param <B>      type of the first element of the pair
-     * @return union of bounds of all first elements,
-     *         or <code>null</code> if the collection was empty
+     * @param <T> type of the second element of the pair
+     * @param <B> type of the first element of the pair
+     * @return union of bounds of all first elements, or <code>null</code> if the collection was empty
      * @see Bounds#ofAll(Collection)
      * @see Bounds#ofAllRight(Collection)
      */
@@ -251,15 +246,13 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     /**
-     * The smallest rectangle containing the second elements of all pairs of the collection.
-     * The collection, all the pairs and all the second elements have to be non-null.
-     * If the collections is empty, returns <code>null</code>.
+     * The smallest rectangle containing the second elements of all pairs of the collection. The collection, all the
+     * pairs and all the second elements have to be non-null. If the collections is empty, returns <code>null</code>.
      *
      * @param thingies collection of pairs
-     * @param <T>      type of the first element of the pair
-     * @param <B>      type of the second element of the pair
-     * @return union of bounds of all second elements,
-     *         or <code>null</code> if the collection was empty
+     * @param <T> type of the first element of the pair
+     * @param <B> type of the second element of the pair
+     * @return union of bounds of all second elements, or <code>null</code> if the collection was empty
      * @see Bounds#ofAll(Collection)
      * @see Bounds#ofAllLeft(Collection)
      */
@@ -293,21 +286,15 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     public int compareTo(@Nonnull Bounds that) {
-        return new CompareToBuilder()
-                .append(this.left, that.left)
-                .append(this.top, that.top)
-                .append(this.right, that.right)
-                .append(this.bottom, that.bottom)
-                .toComparison();
+        return COMPARATOR.compare(this, that);
     }
 
     /**
-     * Checks if these bounds contain given bounds.
-     * Interprets <code>null</code> as empty bounds, returning <code>true</code>.
+     * Checks if these bounds contain given bounds. Interprets <code>null</code> as empty bounds, returning
+     * <code>true</code>.
      *
      * @param b bounds to check
-     * @return <code>true</code> if <code>b</code> is contained within these bounds,
-     *         <code>false</code> otherwise
+     * @return <code>true</code> if <code>b</code> is contained within these bounds, <code>false</code> otherwise
      * @see Bounds#in(Bounds)
      */
     public boolean contains(@Nullable Bounds b) {
@@ -345,23 +332,34 @@ public class Bounds implements Comparable<Bounds>, Bounded {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Bounds bounds = (Bounds) o;
 
-        if (bottom != bounds.bottom) return false;
-        if (left != bounds.left) return false;
-        if (right != bounds.right) return false;
-        if (top != bounds.top) return false;
+        if (bottom != bounds.bottom) {
+            return false;
+        }
+        if (left != bounds.left) {
+            return false;
+        }
+        if (right != bounds.right) {
+            return false;
+        }
+        if (top != bounds.top) {
+            return false;
+        }
 
         return true;
     }
 
     /**
-     * Creates new bounds that have the same y coordinates as these ones,
-     * but have the x coordinates containing both x coordinates of these bounds
-     * as the coordinates of the other bounds (<code>heightSource</code>).
+     * Creates new bounds that have the same y coordinates as these ones, but have the x coordinates containing both x
+     * coordinates of these bounds as the coordinates of the other bounds (<code>heightSource</code>).
      * <br/>
      * Interprets <code>null</code> as empty bounds, returning these bounds unmodified.
      *
@@ -381,9 +379,8 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     /**
-     * Creates new bounds that have the same y coordinates as these ones,
-     * but have the x coordinates containing both x coordinates of these bounds
-     * as the coordinates of the other bounds (<code>widthSource</code>).
+     * Creates new bounds that have the same y coordinates as these ones, but have the x coordinates containing both x
+     * coordinates of these bounds as the coordinates of the other bounds (<code>widthSource</code>).
      * <br/>
      * Interprets <code>null</code> as empty bounds, returning these bounds unmodified.
      *
@@ -492,7 +489,6 @@ public class Bounds implements Comparable<Bounds>, Bounded {
      *
      * @return average of the y coordinates of the top and bottom edges
      */
-
     public int getMiddle() {
         return (top + bottom) / 2;
     }
@@ -545,8 +541,7 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     /**
-     * Creates bounds by expanding these bounds
-     * by the given number of pixels in all four directions.
+     * Creates bounds by expanding these bounds by the given number of pixels in all four directions.
      *
      * @param pixels number of pixels to expand
      * @return larger bounds
@@ -580,8 +575,7 @@ public class Bounds implements Comparable<Bounds>, Bounded {
      * Interprets <code>null</code> as empty bounds, returning <code>false</code>.
      *
      * @param b bounds to check
-     * @return <code>true</code> if these bounds are contained inside <code>b</code>,
-     *         <code>false</code> otherwise
+     * @return <code>true</code> if these bounds are contained inside <code>b</code>, <code>false</code> otherwise
      * @see Bounds#contains(Bounds)
      */
     public boolean in(@Nullable Bounds b) {
@@ -589,28 +583,26 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     /**
-     * Checks if x coordinates of these bounds and the other bounds overlap.
-     * This can be used to check if two sets of bounds belong to text in the same column.
+     * Checks if x coordinates of these bounds and the other bounds overlap. This can be used to check if two sets of
+     * bounds belong to text in the same column.
      * <br/>
      * Interprets <code>null</code> as empty bounds, returning <code>false</code>.
      *
      * @param bounds other bounds
-     * @return <code>true</code> if the bounds are in the same column,
-     *         <code>false</code> otherwise
+     * @return <code>true</code> if the bounds are in the same column, <code>false</code> otherwise
      */
     public boolean inTheSameColumnAs(@Nullable Bounds bounds) {
         return bounds != null && left <= bounds.right && right >= bounds.left;
     }
 
     /**
-     * Checks if y coordinates of these bounds and the other bounds overlap.
-     * This can be used to check if two sets of bounds belong to text in the same row.
+     * Checks if y coordinates of these bounds and the other bounds overlap. This can be used to check if two sets of
+     * bounds belong to text in the same row.
      * <br/>
      * Interprets <code>null</code> as empty bounds, returning <code>false</code>.
      *
      * @param bounds other bounds
-     * @return <code>true</code> if the bounds are in the same row,
-     *         <code>false</code> otherwise
+     * @return <code>true</code> if the bounds are in the same row, <code>false</code> otherwise
      */
     public boolean inTheSameRowAs(Bounds bounds) {
         return top <= bounds.bottom && bottom >= bounds.top;
@@ -619,11 +611,11 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     /**
      * Returns the intersection of these bounds and the other bounds.
      * <br/>
-     * Interprets <code>null</code> as empty bounds, returning <code>null</code>.
-     * May return bounds with negative width or height. It may be fixed later.
+     * Interprets <code>null</code> as empty bounds, returning <code>null</code>. May return bounds with negative width
+     * or height. It may be fixed later.
      * <br/>
-     * An intesection of two bounding rectangles
-     * is the largest bounding rectangle that is contained by both the input rectangles.
+     * An intesection of two bounding rectangles is the largest bounding rectangle that is contained by both the input
+     * rectangles.
      *
      * @param b the other bounds
      * @return intersection of bounds
@@ -642,10 +634,8 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     /**
-     * Checks if the bounds intersect
-     * and the intersection is not empty
-     * and if any of the original bounds have non-zero area,
-     * if the intersection has non-zero area too.
+     * Checks if the bounds intersect and the intersection is not empty and if any of the original bounds have non-zero
+     * area, if the intersection has non-zero area too.
      *
      * @param b other bounds
      * @return <code>true</code> if bounds intersect, <code>false</code> otherwise
@@ -655,17 +645,16 @@ public class Bounds implements Comparable<Bounds>, Bounded {
      */
     public boolean intersects(@Nullable Bounds b) {
         Bounds intersection = intersection(b);
-        boolean operandsZeroArea = hasZeroArea() || b==null || b.hasZeroArea();
-        return intersection != null && !intersection.isEmpty() &&
-                (operandsZeroArea || !intersection.hasZeroArea());
+        boolean operandsZeroArea = hasZeroArea() || b == null || b.hasZeroArea();
+        return intersection != null && !intersection.isEmpty()
+                && (operandsZeroArea || !intersection.hasZeroArea());
     }
 
     /**
      * Checks if these bounds are above given bounds.
      *
      * @param b given bounds (not <code>null</code>)
-     * @return <code>true</code> if these bounds are above the given bounds,
-     *         <code>false</code> otherwise
+     * @return <code>true</code> if these bounds are above the given bounds, <code>false</code> otherwise
      * @throws NullPointerException if <code>b</code> is <code>null</code>
      */
     public boolean isAbove(@Nonnull Bounds b) {
@@ -676,8 +665,7 @@ public class Bounds implements Comparable<Bounds>, Bounded {
      * Checks if these bounds are below given bounds.
      *
      * @param b given bounds (not <code>null</code>)
-     * @return <code>true</code> if these bounds are below the given bounds,
-     *         <code>false</code> otherwise
+     * @return <code>true</code> if these bounds are below the given bounds, <code>false</code> otherwise
      * @throws NullPointerException if <code>b</code> is <code>null</code>
      */
     public boolean isBelow(@Nonnull Bounds b) {
@@ -685,8 +673,7 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     /**
-     * Checks if the bounds have negative width or height.
-     * Such bounds are considered empty.
+     * Checks if the bounds have negative width or height. Such bounds are considered empty.
      *
      * @return <code>true</code> if the bounds are empty, <code>false</code> otherwise.
      */
@@ -698,8 +685,7 @@ public class Bounds implements Comparable<Bounds>, Bounded {
      * Checks if these bounds are to the left of given bounds.
      *
      * @param b given bounds (not <code>null</code>)
-     * @return <code>true</code> if these bounds are to the left of the given bounds,
-     *         <code>false</code> otherwise
+     * @return <code>true</code> if these bounds are to the left of the given bounds, <code>false</code> otherwise
      * @throws NullPointerException if <code>b</code> is <code>null</code>
      */
     public boolean isToTheLeft(@Nonnull Bounds b) {
@@ -710,8 +696,7 @@ public class Bounds implements Comparable<Bounds>, Bounded {
      * Checks if these bounds are to the right of given bounds.
      *
      * @param b given bounds (not <code>null</code>)
-     * @return <code>true</code> if these bounds are to the right of the given bounds,
-     *         <code>false</code> otherwise
+     * @return <code>true</code> if these bounds are to the right of the given bounds, <code>false</code> otherwise
      * @throws NullPointerException if <code>b</code> is <code>null</code>
      */
     public boolean isToTheRight(@Nonnull Bounds b) {
@@ -785,41 +770,36 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     /**
-     * Divides this bounds vertically into <code>noOfSections</code> sections
-     * of roughly the same width
-     * and returns the section number <code>sectionIndex</code>.
+     * Divides this bounds vertically into <code>noOfSections</code> sections of roughly the same width and returns the
+     * section number <code>sectionIndex</code>.
      * <br/>
      * Sections are numbered from the left, starting from 0.
      *
      * @param sectionIndex section number to return
      * @param noOfSections total number of sections
      * @return bounds of the section
-     * @throws IllegalArgumentException  if <code>noOfSections</code> is not positive
-     * @throws IndexOutOfBoundsException if <code>sectionIndex</code> &lt; 0
-     *                                   or <code>sectionIndex</code> &gt;= <code>noOfSections</code>
+     * @throws IllegalArgumentException if <code>noOfSections</code> is not positive
+     * @throws IndexOutOfBoundsException if <code>sectionIndex</code> &lt; 0 or <code>sectionIndex</code> &gt;=
+     * <code>noOfSections</code>
      */
     public Bounds section(int sectionIndex, int noOfSections) {
         return section(sectionIndex, sectionIndex + 1, noOfSections);
     }
 
     /**
-     * Divides this bounds vertically into <code>noOfSections</code> sections
-     * of roughly the same width
-     * and returns the bounds of sections with numbers from range
-     * [<code>startIndex</code>, <code>endIndex</code>).
+     * Divides this bounds vertically into <code>noOfSections</code> sections of roughly the same width and returns the
+     * bounds of sections with numbers from range [<code>startIndex</code>, <code>endIndex</code>).
      * <br/>
      * Sections are numbered from the left, starting from 0.
      *
-     * @param startIndex   starting section number
-     * @param endIndex     final section number (not included in the result)
+     * @param startIndex starting section number
+     * @param endIndex final section number (not included in the result)
      * @param noOfSections total number of sections
      * @return bounds of the sections
-     * @throws IllegalArgumentException  if <code>noOfSections</code> is not positive
-     *                                   or <code>startIndex</code> &gt; <code>endIndex</code>
-     * @throws IndexOutOfBoundsException if <code>startIndex</code> &lt; 0
-     *                                   or <code>endIndex</code> &lt; 0
-     *                                   or <code>startIndex</code> &gt; <code>noOfSections</code>
-     *                                   or <code>endIndex</code> &gt; <code>noOfSections</code>
+     * @throws IllegalArgumentException if <code>noOfSections</code> is not positive or <code>startIndex</code> &gt;
+     * <code>endIndex</code>
+     * @throws IndexOutOfBoundsException if <code>startIndex</code> &lt; 0 or <code>endIndex</code> &lt; 0 or
+     * <code>startIndex</code> &gt; <code>noOfSections</code> or <code>endIndex</code> &gt; <code>noOfSections</code>
      */
     public Bounds section(int startIndex, int endIndex, int noOfSections) {
         if (noOfSections < 1) {
@@ -846,8 +826,7 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     /**
-     * Returns an HOCR-compatible representation of these bounds.
-     * The format is: <code>bbox LEFT TOP RIGHT BOTTOM</code>
+     * Returns an HOCR-compatible representation of these bounds. The format is: <code>bbox LEFT TOP RIGHT BOTTOM</code>
      *
      * @return HOCR-compatible string
      */
@@ -857,17 +836,17 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     /**
-     * Returns an ImageMagick-compatible representation of these bounds.
-     * The format is: <code>WIDTHxHEIGHT+LEFT+TOP</code>
+     * Returns an ImageMagick-compatible representation of these bounds. The format is:
+     * <code>WIDTHxHEIGHT+LEFT+TOP</code>
      *
      * @return ImageMagick-compatible string
      */
     @Nonnull
     @Override
     public String toString() {
-        return getWidth() + "x" + getHeight() +
-                (left >= 0 ? "+" : 0) + left +
-                (top >= 0 ? "+" : "") + top;
+        return getWidth() + "x" + getHeight()
+                + (left >= 0 ? "+" : 0) + left
+                + (top >= 0 ? "+" : "") + top;
     }
 
     /**
@@ -884,6 +863,7 @@ public class Bounds implements Comparable<Bounds>, Bounded {
 
     /**
      * Translates the bounds by given vector.
+     *
      * @param dx x displacement
      * @param dy y displacement
      * @return translated bounds
@@ -893,8 +873,8 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     /**
-     * Returns bounds created from these bounds,
-     * optionally trimmed from below to the bottom edge of the given limiting bounds.
+     * Returns bounds created from these bounds, optionally trimmed from below to the bottom edge of the given limiting
+     * bounds.
      * <br/>
      * Interprets <code>null</code> as empty bounds, returning <code>null</code>.
      *
@@ -910,8 +890,7 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     /**
-     * Returns bounds created from these bounds,
-     * optionally trimmed from below to the new bottom edge.
+     * Returns bounds created from these bounds, optionally trimmed from below to the new bottom edge.
      *
      * @param newEdge y coordinate of the new bottom edge
      * @return new bounds, or <code>null</code> if the trimmed bounds are empty
@@ -928,8 +907,8 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     /**
-     * Returns bounds created from these bounds,
-     * optionally trimmed from the left to the left edge of the given limiting bounds.
+     * Returns bounds created from these bounds, optionally trimmed from the left to the left edge of the given limiting
+     * bounds.
      * <br/>
      * Interprets <code>null</code> as empty bounds, returning <code>null</code>.
      *
@@ -945,8 +924,7 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     /**
-     * Returns bounds created from these bounds,
-     * optionally trimmed from the left to the new left edge.
+     * Returns bounds created from these bounds, optionally trimmed from the left to the new left edge.
      *
      * @param newEdge x coordinate of the new left edge
      * @return new bounds, or <code>null</code> if the trimmed bounds are empty
@@ -963,8 +941,8 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     /**
-     * Returns bounds created from these bounds,
-     * optionally trimmed from the right to the right edge of the given limiting bounds.
+     * Returns bounds created from these bounds, optionally trimmed from the right to the right edge of the given
+     * limiting bounds.
      * <br/>
      * Interprets <code>null</code> as empty bounds, returning <code>null</code>.
      *
@@ -980,8 +958,7 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     /**
-     * Returns bounds created from these bounds,
-     * optionally trimmed from the right to the new right edge.
+     * Returns bounds created from these bounds, optionally trimmed from the right to the new right edge.
      *
      * @param newEdge x coordinate of the new right edge
      * @return new bounds, or <code>null</code> if the trimmed bounds are empty
@@ -998,8 +975,8 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     /**
-     * Returns bounds created from these bounds,
-     * optionally trimmed from above to the top edge of the given limiting bounds.
+     * Returns bounds created from these bounds, optionally trimmed from above to the top edge of the given limiting
+     * bounds.
      * <br/>
      * Interprets <code>null</code> as empty bounds, returning <code>null</code>.
      *
@@ -1015,8 +992,7 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     /**
-     * Returns bounds created from these bounds,
-     * optionally trimmed from above to the new top edge.
+     * Returns bounds created from these bounds, optionally trimmed from above to the new top edge.
      *
      * @param newEdge y coordinate of the new top edge
      * @return new bounds, or <code>null</code> if the trimmed bounds are empty
@@ -1033,9 +1009,8 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     /**
-     * Creates new bounds that have the same y coordinates as these ones,
-     * but have the x coordinates contained in both x coordinates of these bounds
-     * as the coordinates of the other bounds (<code>heightSource</code>).
+     * Creates new bounds that have the same y coordinates as these ones, but have the x coordinates contained in both x
+     * coordinates of these bounds as the coordinates of the other bounds (<code>heightSource</code>).
      * <br/>
      * Interprets <code>null</code> as empty bounds, returning <code>null</code>.
      *
@@ -1058,9 +1033,8 @@ public class Bounds implements Comparable<Bounds>, Bounded {
     }
 
     /**
-     * Creates new bounds that have the same y coordinates as these ones,
-     * but have the x coordinates contained in both x coordinates of these bounds
-     * as the coordinates of the other bounds (<code>widthSource</code>).
+     * Creates new bounds that have the same y coordinates as these ones, but have the x coordinates contained in both x
+     * coordinates of these bounds as the coordinates of the other bounds (<code>widthSource</code>).
      * <br/>
      * Interprets <code>null</code> as empty bounds, returning <code>null</code>.
      *
@@ -1087,8 +1061,7 @@ public class Bounds implements Comparable<Bounds>, Bounded {
      * <br/>
      * Interprets <code>null</code> as empty bounds, returning these bounds unmodified.
      * <br/>
-     * A union of two bounding rectangles
-     * is the smallest bounding rectangle that contains both the input rectangles.
+     * A union of two bounding rectangles is the smallest bounding rectangle that contains both the input rectangles.
      *
      * @param b other bounds
      * @return union of bounds

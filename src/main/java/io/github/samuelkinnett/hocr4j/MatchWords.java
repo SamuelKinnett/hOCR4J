@@ -16,8 +16,6 @@ package io.github.samuelkinnett.hocr4j;
 import io.github.samuelkinnett.hocr4j.utils.CollectionUtils;
 import io.github.samuelkinnett.hocr4j.utils.TextUtils;
 
-import org.apache.commons.lang3.builder.CompareToBuilder;
-
 import java.util.*;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
@@ -186,8 +184,19 @@ public final class MatchWords {
     }
 
     static private class WordToStringMatch implements Comparable<WordToStringMatch> {
-        String string;
-        List<Word> words;
+
+        private static final Comparator<WordToStringMatch> COMPARATOR = Comparator.
+
+        private String string;
+        private List<Word> words;
+
+        protected String getString() {
+            return string;
+        }
+
+        protected List<Word> getWords() {
+            return words;
+        }
 
         private WordToStringMatch(List<Word> words, String string) {
             this.words = words;

@@ -15,13 +15,13 @@ package io.github.samuelkinnett.hocr4j.dom;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -143,7 +143,12 @@ public class HocrTag extends HocrElement {
             return false;
         }
         final HocrTag other = (HocrTag) obj;
-        return ObjectUtils.equals(this.getElements(), other.getElements()) && ObjectUtils.equals(this.getName(), other.getName()) && ObjectUtils.equals(this.getTagClass(), other.getTagClass()) && ObjectUtils.equals(this.getTitle(), other.getTitle()) && ObjectUtils.equals(this.getID(), other.getID()) && ObjectUtils.equals(this.getAttributes(), other.getAttributes());
+        return Objects.equals(this.getElements(), other.getElements())
+                && Objects.equals(this.getName(), other.getName())
+                && Objects.equals(this.getTagClass(), other.getTagClass())
+                && Objects.equals(this.getTitle(), other.getTitle())
+                && Objects.equals(this.getID(), other.getID())
+                && Objects.equals(this.getAttributes(), other.getAttributes());
     }
 
     @Nullable
@@ -172,7 +177,7 @@ public class HocrTag extends HocrElement {
 
     @Override
     public int hashCode() {
-        return ObjectUtils.hashCodeMulti(elements, name, tagClass, title, id, attributes);
+        return Objects.hash(elements, name, tagClass, title, id, attributes);
     }
 
     @Override
